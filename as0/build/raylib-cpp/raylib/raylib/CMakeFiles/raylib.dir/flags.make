@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
 
-C_INCLUDES = -I/home/shang/CS381/as0/raylib-cpp/raylib/src -isystem /home/shang/CS381/as0/raylib-cpp/raylib/src/external/glfw/include
+C_INCLUDES = -I/home/shang/CS-381/as0/raylib-cpp/raylib/src -isystem /home/shang/CS-381/as0/raylib-cpp/raylib/src/external/glfw/include
 
 C_FLAGS = -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -std=gnu99
 

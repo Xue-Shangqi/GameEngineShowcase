@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/shang/CS381/as0
+CMAKE_SOURCE_DIR = /home/shang/CS-381/as0
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/shang/CS381/as0/build
+CMAKE_BINARY_DIR = /home/shang/CS-381/as0/build
 
 # Include any dependencies generated for this target.
 include raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/depend.make
@@ -72,44 +72,44 @@ include raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfasts
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/flags.make
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o: ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shang/CS381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o -MF CMakeFiles/libfastsignals.dir/src/connection.cpp.o.d -o CMakeFiles/libfastsignals.dir/src/connection.cpp.o -c /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shang/CS-381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o"
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.o -MF CMakeFiles/libfastsignals.dir/src/connection.cpp.o.d -o CMakeFiles/libfastsignals.dir/src/connection.cpp.o -c /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libfastsignals.dir/src/connection.cpp.i"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp > CMakeFiles/libfastsignals.dir/src/connection.cpp.i
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp > CMakeFiles/libfastsignals.dir/src/connection.cpp.i
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/connection.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libfastsignals.dir/src/connection.cpp.s"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp -o CMakeFiles/libfastsignals.dir/src/connection.cpp.s
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/connection.cpp -o CMakeFiles/libfastsignals.dir/src/connection.cpp.s
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/flags.make
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o: ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shang/CS381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o -MF CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o.d -o CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o -c /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shang/CS-381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o"
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o -MF CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o.d -o CMakeFiles/libfastsignals.dir/src/function_detail.cpp.o -c /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libfastsignals.dir/src/function_detail.cpp.i"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp > CMakeFiles/libfastsignals.dir/src/function_detail.cpp.i
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp > CMakeFiles/libfastsignals.dir/src/function_detail.cpp.i
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/function_detail.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libfastsignals.dir/src/function_detail.cpp.s"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp -o CMakeFiles/libfastsignals.dir/src/function_detail.cpp.s
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/function_detail.cpp -o CMakeFiles/libfastsignals.dir/src/function_detail.cpp.s
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/flags.make
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o: ../raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shang/CS381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o -MF CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o.d -o CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o -c /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/shang/CS-381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o"
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o -MF CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o.d -o CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o -c /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.i"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp > CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.i
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp > CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.i
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.s"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp -o CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.s
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/src/signal_impl.cpp -o CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.s
 
 # Object files for target libfastsignals
 libfastsignals_OBJECTS = \
@@ -125,19 +125,19 @@ raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/liblibfastsignals.a: raylib
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/liblibfastsignals.a: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/src/signal_impl.cpp.o
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/liblibfastsignals.a: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build.make
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/liblibfastsignals.a: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shang/CS381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library liblibfastsignals.a"
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && $(CMAKE_COMMAND) -P CMakeFiles/libfastsignals.dir/cmake_clean_target.cmake
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/libfastsignals.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/shang/CS-381/as0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library liblibfastsignals.a"
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && $(CMAKE_COMMAND) -P CMakeFiles/libfastsignals.dir/cmake_clean_target.cmake
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/libfastsignals.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build: raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/liblibfastsignals.a
 .PHONY : raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/clean:
-	cd /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && $(CMAKE_COMMAND) -P CMakeFiles/libfastsignals.dir/cmake_clean.cmake
+	cd /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals && $(CMAKE_COMMAND) -P CMakeFiles/libfastsignals.dir/cmake_clean.cmake
 .PHONY : raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/clean
 
 raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/depend:
-	cd /home/shang/CS381/as0/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/shang/CS381/as0 /home/shang/CS381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals /home/shang/CS381/as0/build /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals /home/shang/CS381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/shang/CS-381/as0/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/shang/CS-381/as0 /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals /home/shang/CS-381/as0/build /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals /home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/depend
 
