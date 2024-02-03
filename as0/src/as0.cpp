@@ -15,11 +15,9 @@ int main(){
     int winWidthResized = 800;
     int winHeight = 450;
     int winHeightResized = 450;
-    int colorIndexStart = 0;
-    int colorIndexEnd = 1;
-    double timeTracker = 0;
+    int colorIndex = 0;
     double timeElapsed = 0;
-    double lerpTime = 2;
+    double lerpTime = 3;
     std::string content = "What is 1 + 1?";
 
     raylib::Color colorList[4] = {
@@ -31,38 +29,34 @@ int main(){
 
     raylib::Text text;
 
-    SetTargetFPS(60);
+    SetTargetFPS(120);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(winWidth, winHeight, "CS381 - Assignment 0");
-    timeTracker = GetTime();
     while (!WindowShouldClose()) {
         BeginDrawing();
         {
-			ClearBackground(RAYWHITE);
+			ClearBackground(BLACK);
             if(IsWindowResized()){
                 winWidthResized = GetScreenWidth();
                 winHeightResized = GetScreenHeight();
             }
-            int textOffset = (MeasureText(content.c_str(), 20))/2;
+            int textOffset = (MeasureText(content.c_str(), 50))/2;
 
-            //color changes every second base on the frame  
+      
             timeElapsed += GetFrameTime();
             double t = timeElapsed / lerpTime;
 
-            timeTracker += GetFrameTime();
-            if(timeTracker >= lerpTime){
-                colorIndexStart = (colorIndexStart+1) % 4;
-                colorIndexEnd = (colorIndexEnd+1) % 4;
-                timeTracker = 0;
+            if(timeElapsed >= lerpTime){
+                colorIndex = (colorIndex + 1) % 4;
                 timeElapsed = 0;
             }    
             
-            raylib::Color initColor = LerpColor(colorList[colorIndexStart], colorList[colorIndexEnd], t);
-            raylib::Color finalColor = LerpColor(initColor, colorList[colorIndexEnd], t);
-            text.Draw(content, winWidthResized/2 - textOffset, winHeightResized/2, 20, finalColor);
-
+            raylib::Color finalColor = LerpColor(colorList[colorIndex], colorList[(colorIndex + 1) % 4], t);
+            text.Draw(content, winWidthResized/2 - textOffset, winHeightResized/2, 50, finalColor);
+            text.Draw(std::to_string(GetFPS()), 10, 10, 20, raylib::Color::RayWhite());
             
         }
         EndDrawing();
     }
+    return 0;
 }
