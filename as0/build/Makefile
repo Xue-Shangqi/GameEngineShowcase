@@ -272,29 +272,29 @@ libfastsignals/fast:
 	$(MAKE) $(MAKESILENT) -f raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build.make raylib-cpp/BufferedRaylib/FastSignals/libfastsignals/CMakeFiles/libfastsignals.dir/build
 .PHONY : libfastsignals/fast
 
-src/helloworld.o: src/helloworld.cpp.o
-.PHONY : src/helloworld.o
+src/resizeableWindow.o: src/resizeableWindow.cpp.o
+.PHONY : src/resizeableWindow.o
 
 # target to build an object file
-src/helloworld.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/helloworld.cpp.o
-.PHONY : src/helloworld.cpp.o
+src/resizeableWindow.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/resizeableWindow.cpp.o
+.PHONY : src/resizeableWindow.cpp.o
 
-src/helloworld.i: src/helloworld.cpp.i
-.PHONY : src/helloworld.i
+src/resizeableWindow.i: src/resizeableWindow.cpp.i
+.PHONY : src/resizeableWindow.i
 
 # target to preprocess a source file
-src/helloworld.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/helloworld.cpp.i
-.PHONY : src/helloworld.cpp.i
+src/resizeableWindow.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/resizeableWindow.cpp.i
+.PHONY : src/resizeableWindow.cpp.i
 
-src/helloworld.s: src/helloworld.cpp.s
-.PHONY : src/helloworld.s
+src/resizeableWindow.s: src/resizeableWindow.cpp.s
+.PHONY : src/resizeableWindow.s
 
 # target to generate assembly for a file
-src/helloworld.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/helloworld.cpp.s
-.PHONY : src/helloworld.cpp.s
+src/resizeableWindow.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/as0.dir/build.make CMakeFiles/as0.dir/src/resizeableWindow.cpp.s
+.PHONY : src/resizeableWindow.cpp.s
 
 # Help Target
 help:
@@ -317,9 +317,9 @@ help:
 	@echo "... libfastsignals"
 	@echo "... raylib"
 	@echo "... tst"
-	@echo "... src/helloworld.o"
-	@echo "... src/helloworld.i"
-	@echo "... src/helloworld.s"
+	@echo "... src/resizeableWindow.o"
+	@echo "... src/resizeableWindow.i"
+	@echo "... src/resizeableWindow.s"
 .PHONY : help
 
 
