@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/buffered-raylib.dir/src/BufferedInput.cpp.o"
-  "CMakeFiles/buffered-raylib.dir/src/BufferedInput.cpp.o.d"
   "libbuffered-raylib.a"
   "libbuffered-raylib.pdb"
 )

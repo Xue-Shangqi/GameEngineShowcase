@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/as0.dir/src/resizeableWindow.cpp.o"
-  "CMakeFiles/as0.dir/src/resizeableWindow.cpp.o.d"
+  "CMakeFiles/as0.dir/src/as0.cpp.o"
   "as0"
   "as0.pdb"
 )

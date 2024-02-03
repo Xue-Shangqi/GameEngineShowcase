@@ -1,6 +1,6 @@
 # CMake generated Testfile for 
-# Source directory: /home/shang/CS-381/as0/raylib-cpp/raylib
-# Build directory: /home/shang/CS-381/as0/build/raylib-cpp/raylib
+# Source directory: /home/student/Documents/CS-381/as0/raylib-cpp/raylib
+# Build directory: /home/student/Documents/CS-381/as0/build/raylib-cpp/raylib
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.

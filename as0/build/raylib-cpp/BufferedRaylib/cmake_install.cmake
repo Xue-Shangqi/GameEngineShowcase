@@ -1,4 +1,4 @@
-# Install script for directory: /home/shang/CS-381/as0/raylib-cpp/BufferedRaylib
+# Install script for directory: /home/student/Documents/CS-381/as0/raylib-cpp/BufferedRaylib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/shang/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/cmake_install.cmake")
+  include("/home/student/Documents/CS-381/as0/build/raylib-cpp/BufferedRaylib/FastSignals/cmake_install.cmake")
 
 endif()
 
