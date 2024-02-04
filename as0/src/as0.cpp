@@ -9,6 +9,11 @@ raylib::Color LerpColor(raylib::Color start, raylib::Color end, double t) {
     return raylib::Color(r, g, b);
 }
 
+int LerpSize(int start, int end, double t){
+    t = fminf(1, fmaxf(0, t));
+    int size = start + t *(end - start);
+    return size; 
+}
 
 int main(){
     int winWidth = 800;
@@ -16,6 +21,7 @@ int main(){
     int winHeight = 450;
     int winHeightResized = 450;
     int colorIndex = 0;
+    int size = 50;
     double timeElapsed = 0;
     double lerpTime = 3;
     std::string content = "What is 1 + 1?";
@@ -35,14 +41,13 @@ int main(){
     while (!WindowShouldClose()) {
         BeginDrawing();
         {
+
 			ClearBackground(BLACK);
             if(IsWindowResized()){
                 winWidthResized = GetScreenWidth();
                 winHeightResized = GetScreenHeight();
             }
-            int textOffset = (MeasureText(content.c_str(), 50))/2;
 
-      
             timeElapsed += GetFrameTime();
             double t = timeElapsed / lerpTime;
 
@@ -50,10 +55,15 @@ int main(){
                 colorIndex = (colorIndex + 1) % 4;
                 timeElapsed = 0;
             }    
+
             
-            raylib::Color finalColor = LerpColor(colorList[colorIndex], colorList[(colorIndex + 1) % 4], t);
-            text.Draw(content, winWidthResized/2 - textOffset, winHeightResized/2, 50, finalColor);
-            text.Draw(std::to_string(GetFPS()), 10, 10, 20, raylib::Color::RayWhite());
+            int textOffset = (MeasureText(content.c_str(), size))/2;
+
+            raylib::Color finalColor = LerpColor(colorList[colorIndex], colorList[(colorIndex + 1) % 4], t); 
+            size = LerpSize(20, 70, t);
+            
+            text.Draw(content, winWidthResized/2 - textOffset, winHeightResized/2, size, finalColor);
+            text.Draw("FPS: " + std::to_string(GetFPS()), 10, 10, 20, raylib::Color::RayWhite());
             
         }
         EndDrawing();
