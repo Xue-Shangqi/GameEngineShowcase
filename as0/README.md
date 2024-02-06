@@ -1,3 +1,6 @@
+# About
+This project was a simple resizable window that displays a text in the center of the screen even after the window has been resized. For the extra credit portion, I added size animation and slow change between different color.
+
 # Set up
 To run the code, first you need to git clone the CS-381 repository and then update submodules. Run the commands:
 ```
@@ -21,3 +24,5 @@ cmake ..
 make
 ./as0
 ```
+# Controls
+Not applicable
