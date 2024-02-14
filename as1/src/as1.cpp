@@ -1,9 +1,14 @@
 #include "raylib-cpp.hpp"
 
+//lambda function for translation
+auto translateModel = [](raylib::Model& model, float x, float y, float z){
+    model.transform = raylib::Transform(model.transform).Translate(x,y,z);
+};
+
 //Function to draw and translate the models
 void DrawBoundedModel(raylib::Model& model, Vector3 position, Vector3 scale, Vector3 rotation){
     raylib::Transform ogTransform = model.transform;
-    model.transform = raylib::Transform(model.transform).Translate(position.x,position.y,position.z);
+    translateModel(model, position.x, position.y, position.z);
     model.transform = raylib::Transform(model.transform).Scale(scale.x, scale.y, scale.z);
     model.transform = raylib::Transform(model.transform).RotateXYZ(raylib::Degree(rotation.x), raylib::Degree(rotation.y), raylib::Degree(rotation.z));
     model.Draw({});
