@@ -18,10 +18,6 @@ cd as1
 mkdir build
 cd build
 ```
-Once you have change directories into the build directory, copy and paste the customModel folder into the build directory or use the following command in the build directory.
-```
-cp -r ../customModel ./customModel
-```
 After the folder is made, run cmake and make and finally run the code:
 ```
 cmake ..

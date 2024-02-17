@@ -5,3 +5,5 @@ file(GLOB sources "src/*.cpp" "src/*.c")
 add_executable(as1 ${sources})
 target_link_libraries(as1 PUBLIC raylib raylib_cpp)
 set_property(TARGET as1 PROPERTY CXX_STANDARD 20)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/customModel DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
