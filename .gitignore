@@ -33,4 +33,5 @@
 
 # Custom Ignores 
 build/
+generated/
 *.vscode
