@@ -84,8 +84,8 @@
         raylib::Vector3 velocityCam = {0, 0, 0};
 
         //Set up sound
-        raylib::AudioDevice audiodevice;
-        raylib::Sound engine("sound/engineSound.wav");
+        InitAudioDevice();
+        Sound engine = LoadSound("sound/engineSound.wav");
         bool isPlaneMoving = false;
 
         //Set up skybox
@@ -114,20 +114,19 @@
         bool isEDown = false;
 
         while (!WindowShouldClose()) {
-
+            if (IsKeyPressed(KEY_SPACE)) PlaySound(engine);
             // Inside the main loop
- 
             if (velocity != raylib::Vector3{0, 0, 0}) {
                 isPlaneMoving = true;
                 //Play the sound if it's not already playing
                 if (!IsSoundPlaying(engine)) {
-                    engine.Play();
+                    PlaySound(engine);
                 }
             } else {
                 isPlaneMoving = false;
                 //Stop the sound if it's playing
                 if (IsSoundPlaying(engine)) {
-                    engine.Stop();
+                    StopSound(engine);
                 }
             }
 
