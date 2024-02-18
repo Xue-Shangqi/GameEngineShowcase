@@ -6,11 +6,11 @@ Although remapping the camera might seem like a simply solution, it is not used 
 
 ## Extra Credit 
 For the extra credot part, I attempted:
-    * No IsKeyPressed for plane movement
-    * Custom mesh off the internet
-    * Arrow keys for control
-    * Camera movement
-    * Engine noise
+    ** No IsKeyPressed for plane movement
+    ** Custom mesh off the internet
+    ** Arrow keys for control
+    ** Camera movement
+    ** Engine noise
 
 # Set up
 To run the code, first you need to git clone the CS-381 repository and then update submodules. Run the commands:
