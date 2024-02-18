@@ -6,11 +6,11 @@ Although remapping the camera might seem like a simply solution, it is not used 
 
 ## Extra Credit 
 For the extra credot part, I attempted:
-    - No IsKeyPressed for plane movement
-    - Custom mesh off the internet
-    - Arrow keys for control
-    - Camera movement
-    - Engine noise
+* No IsKeyPressed for plane movement
+* Custom mesh off the internet
+* Arrow keys for control
+* Camera movement
+* Engine noise
 
 # Set up
 To run the code, first you need to git clone the CS-381 repository and then update submodules. Run the commands:
@@ -37,9 +37,9 @@ make
 ```
 # Controls
 There are movement controls for this project. They are WASD or the arrow keys
-    - W and Up arrow - Moves the plane away from the camera
-    - S and Down arrow - Moves the plane towards the camera
-    - A and Left arrow - Moves the plane left 
-    - D and Right arrow - Moves the plane right
-    - Q - Ascend the plane
-    - E - Descend the plane
+* W and Up arrow - Moves the plane away from the camera
+* S and Down arrow - Moves the plane towards the camera
+* A and Left arrow - Moves the plane left 
+* D and Right arrow - Moves the plane right
+* Q - Ascend the plane
+* E - Descend the plane
