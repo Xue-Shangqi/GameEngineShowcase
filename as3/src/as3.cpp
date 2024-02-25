@@ -6,6 +6,15 @@
         model.transform = raylib::Transform(model.transform).Translate(x,y,z);
     };
 
+    //lambda function for clamp
+    static constexpr auto AngleClamp = [](raylib::Degree angle) -> raylib::Degree {
+        int intPart = angle;
+        float floatPart = float(angle) - intPart;
+        intPart %= 360;
+        intPart += (intPart < 0) * 360;
+        return intPart + floatPart;
+    };
+
     //Function to draw and translate the models
     void DrawBoundedModel(raylib::Model& model, Vector3 position, Vector3 scale, Vector3 rotation){
         raylib::Transform ogTransform = model.transform;
@@ -15,6 +24,73 @@
         model.Draw({});
         model.GetTransformedBoundingBox().Draw();
         model.transform = ogTransform;
+    }
+
+    void movementControl(Plane plane){
+        //Movement conditions
+        //Backward
+        if(IsKeyDown(KEY_W)  && !plane.isBackDown){
+            plane.speedTarget += 10;
+        }
+        plane.isBackDown = (IsKeyDown(KEY_W));
+        
+        //Forward
+        if(IsKeyDown(KEY_S) && !plane.isFrontDown){
+            plane.speedTarget -= 10;
+        }
+        plane.isFrontDown = (IsKeyDown(KEY_S));
+
+        //Stops the plane
+        if(IsKeyDown(KEY_SPACE) && !plane.isSpaceDown){
+            plane.speedTarget = 0;
+        }
+        plane.isSpaceDown = (IsKeyDown(KEY_SPACE));
+
+        //Right 
+        if(IsKeyDown(KEY_A) && !plane.isRightDown){
+            plane.headingTarget += 60;
+        }
+        plane.isRightDown = (IsKeyDown(KEY_A));
+
+        //Left
+        if(IsKeyDown(KEY_D) && !plane.isLeftDown){
+            plane.headingTarget -= 60;
+        }
+        plane.isLeftDown = (IsKeyDown(KEY_D));
+
+        //Ascend
+        // if(IsKeyDown(KEY_Q) && !isQDown){
+        //     velocity += raylib::Vector3::Up() * speed;
+        // }
+        // isQDown = IsKeyDown(KEY_Q);
+
+        // //Descend
+        // if(IsKeyDown(KEY_E) && !isEDown){
+        //     velocity += raylib::Vector3::Down() * speed;
+        // }
+        // isEDown = IsKeyDown(KEY_E);
+
+        //Speed calculation
+        if(plane.speedTarget > plane.speed){
+            plane.speed += plane.acceleration * GetFrameTime();
+        }else if(plane.speedTarget < plane.speed){
+            plane.speed -= plane.acceleration * GetFrameTime();
+        }
+        plane.velocity = raylib::Vector3{-plane.speed * cos(plane.heading.RadianValue()), 0, plane.speed * sin(plane.heading.RadianValue())};
+        plane.pos += plane.velocity * GetFrameTime();
+        
+
+        //Heading calculation
+        plane.headingTarget = AngleClamp(plane.headingTarget);
+        plane.heading = AngleClamp(plane.heading);
+        float difference = abs(plane.headingTarget - plane.heading);
+        if(plane.headingTarget > plane.heading){
+            if(difference < 180) plane.heading += plane.acceleration * GetFrameTime();
+            else if(difference > 180) plane.heading -= plane.acceleration * GetFrameTime();
+        }else if(plane.headingTarget < plane.heading){
+            if(difference < 180) plane.heading -= plane.acceleration * GetFrameTime();
+            else if(difference > 180) plane.heading += plane.acceleration * GetFrameTime();
+        }
     }
 
     struct Skybox {
@@ -56,6 +132,27 @@
             rlEnableBackfaceCulling();
             rlEnableDepthMask();
         }
+    };
+
+
+    struct Plane{
+        //Variables for position and speed 
+        float speed = 10;
+        float speedTarget = 10;
+        float acceleration = 30;
+        raylib::Degree heading = 10;
+        raylib::Degree headingTarget = 10;
+        raylib::Vector3 velocity = {speed * cos(heading.RadianValue()), 0, -speed * sin(heading.RadianValue())};
+        raylib::Vector3 pos = {0, 0, 0};
+
+        //Variables for checking if keys are pressed
+        bool isBackDown = false;
+        bool isFrontDown = false;
+        bool isRightDown = false;
+        bool isLeftDown = false;
+        bool isSpaceDown = false;
+        bool isQDown = false;
+        bool isEDown = false;        
     };
 
     int main(){
@@ -101,17 +198,28 @@
         ground.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = grass;
 
         //Variables for position and speed 
-        float speed = 50;
+        float speed = 10;
+        float speedTarget = 10;
+        float acceleration = 30;
+        raylib::Degree heading = 10;
+        raylib::Degree headingTarget = 10;
+        raylib::Vector3 velocity = {speed * cos(heading.RadianValue()), 0, -speed * sin(heading.RadianValue())};
         raylib::Vector3 pos = {0, 0, 0};
-        raylib::Vector3 velocity = {0, 0, 0};
 
         //Variables for checking if keys are pressed
         bool isBackDown = false;
         bool isFrontDown = false;
         bool isRightDown = false;
         bool isLeftDown = false;
+        bool isSpaceDown = false;
         bool isQDown = false;
         bool isEDown = false;
+
+        //Variable for plane switching
+        int planeNum = 1;
+        Plane planeOne;
+        Plane planeTwo;
+        Plane planeThree;
 
         while (!WindowShouldClose()) {
             if (IsKeyPressed(KEY_SPACE)) PlaySound(engine);
@@ -130,23 +238,8 @@
                 }
             }
 
-            //Camera that tracks the player 
-            camera.target = {pos.x, pos.y, pos.z};
-            switch (GetKeyPressed()) {
-                case KEY_A:
-                case KEY_LEFT:
-                    velocityCam += raylib::Vector3::Right() * speed;
-                    break;
-                case KEY_D:
-                case KEY_RIGHT:
-                    velocityCam += raylib::Vector3::Left() * speed;
-                    break;
-                default:
-                    break;
-            }
-            camera.position.x += velocityCam.x * GetFrameTime();
-            camera.position.y += velocityCam.y * GetFrameTime();
-            camera.position.z += velocityCam.z * GetFrameTime();   
+            //Camera that tracks the player, needs rework
+            camera.target = pos;
 
             BeginDrawing();
             {   
@@ -155,51 +248,23 @@
                     ClearBackground(RAYWHITE);
                     skybox.Draw();
                     ground.Draw({});
-                    DrawBoundedModel(plane, pos, {1, 1, 1}, {0, 0, 0});
+                    DrawBoundedModel(plane, pos, {1, 1, 1}, {0, heading, 0});
                     DrawBoundedModel(tree, {-250, -10, 0}, {1, 1, 1}, {0, 0, 0});
                     DrawBoundedModel(tree, {300, -10, 300}, {1, 1, 1}, {0, 0, 0});
 
-                    //Movement conditions
-
-                    //Backward
-                    if((IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) && !isBackDown){
-                        velocity += raylib::Vector3::Back() * speed;
+                    if(IsKeyDown(KEY_TAB)){
+                        planeNum += 1;
+                        planeNum %= 3;
                     }
-                    isBackDown = (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP));
-                    
-                    //Forward
-                    if((IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) && !isFrontDown){
-                        velocity += raylib::Vector3::Forward() * speed;
-                    }
-                    isFrontDown = (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN));
-
-                    //Right 
-                    if((IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) && !isRightDown){
-                        velocity += raylib::Vector3::Right() * speed;
-                    }
-                    isRightDown = (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT));
-
-                    //Left
-                    if((IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) && !isLeftDown){
-                        velocity += raylib::Vector3::Left() * speed;
-                    }
-                    isLeftDown = (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT));
-
-                    //Ascend
-                    if(IsKeyDown(KEY_Q) && !isQDown){
-                        velocity += raylib::Vector3::Up() * speed;
-                    }
-                    isQDown = IsKeyDown(KEY_Q);
-
-                    //Descend
-                    if(IsKeyDown(KEY_E) && !isEDown){
-                        velocity += raylib::Vector3::Down() * speed;
-                    }
-                    isEDown = IsKeyDown(KEY_E);
-
-                    //Speed calculation
-                    pos += velocity * GetFrameTime();
-
+                    switch(planeNum){
+                        case 1:
+                            movementControl(planeOne);
+                        break;
+                        case 2:
+                        break;
+                        case 3:
+                        break;
+                    };
                 }
                 camera.EndMode(); 
             }
