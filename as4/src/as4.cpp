@@ -1,3 +1,8 @@
+/*
+Author: Shangqi Xue 
+Date: March 2rd, 2024
+*/ 
+
 #include "raylib-cpp.hpp"
 #include "rlgl.h"
 
