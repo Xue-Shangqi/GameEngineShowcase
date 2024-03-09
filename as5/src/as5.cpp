@@ -11,9 +11,9 @@ cs381::Delegate<void()> PingButton;
 int main(){
     //Set up sound
     InitAudioDevice();
-    raylib::Sound ping ("audio/ping.wav");
-    raylib::Music crowd ("audio/crowd.wav");
-    raylib::Music pof ("audio/price-of-freedom.mp3");
+    raylib::Sound ping ("audio/ping.mp3");
+    raylib::Music crowd ("audio/coffeeshop.mp3");
+    raylib::Music rain ("audio/softrain.mp3");
 
     //Init ping button
     PingButton +=[&ping]() {
@@ -46,17 +46,17 @@ int main(){
             GuiVolumeControl(&guiState);
             
             //Make sure the audio has enough buffer
-            pof.Update();
+            rain.Update();
             crowd.Update();
 
             //Plays the music 
-            pof.Play();
+            rain.Play();
             crowd.Play();
 
             // Set volume after updating sounds
             ping.SetVolume(guiState.SFXSliderValue / 100);
             crowd.SetVolume(guiState.DialogueSliderValue / 100);
-            pof.SetVolume(guiState.MusicSliderValue / 100);
+            rain.SetVolume(guiState.MusicSliderValue / 100);
         }
         window.EndDrawing();
     }
