@@ -106,7 +106,12 @@ void GuiVolumeControl(GuiVolumeControlState *state) {
     const char *DialogueGroupText = "DialogueVolume";    // GROUPBOX: DialogueGroup
     const char *DialogueSliderText = "";    // SLIDER: DialogueSlider
     const char *PingButtonText = "Ping";    // BUTTON: PingButton
-    
+
+    // Sets the color
+    GuiSetStyle(DEFAULT, TEXT_COLOR_NORMAL, raylib::Color{ 238, 238, 238, 255 });
+    GuiSetStyle(DEFAULT, BORDER_COLOR_NORMAL, raylib::Color{ 118, 171, 174, 255 }); 
+    GuiSetStyle(DEFAULT, BASE_COLOR_NORMAL, raylib::Color{ 49, 54, 63, 255 });
+
     // Draw controls
     GuiGroupBox((Rectangle){ state->anchor01.x + 0, state->anchor01.y + 0, 256, 264 }, VolumeGroupText);
     GuiGroupBox((Rectangle){ state->anchor01.x + 24, state->anchor01.y + 24, 208, 56 }, SFXGroupText);

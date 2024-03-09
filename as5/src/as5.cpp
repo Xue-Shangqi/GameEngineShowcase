@@ -4,16 +4,16 @@
 #include "VolumeControl.h"
 
 cs381::Delegate<void()> PingButton;
-
 #define GUI_VOLUMECONTROL_IMPLEMENTATION
 #include "VolumeControl.h"
+
 
 int main(){
     //Set up sound
     InitAudioDevice();
-    raylib::Sound crowd("audio/crowd.wav");
-    raylib::Sound ping("audio/ping.wav");
-    raylib::Music pof("audio/price-of-freedom.mp3");
+    raylib::Sound ping ("audio/ping.wav");
+    raylib::Music crowd ("audio/crowd.wav");
+    raylib::Music pof ("audio/price-of-freedom.mp3");
 
     //Init ping button
     PingButton +=[&ping]() {
@@ -32,7 +32,7 @@ int main(){
     }).move();
 
     //Set up GUI
-    auto guiState = InitGuiVolumeControl();
+    GuiVolumeControlState guiState = InitGuiVolumeControl();
 
     window.SetTargetFPS(60);
     while (!window.ShouldClose()) {
@@ -40,13 +40,28 @@ int main(){
 
         window.BeginDrawing();
         {
-			ClearBackground(RAYWHITE);
+			ClearBackground(raylib::Color{34, 40, 49, 255});
 
+            //Updates the volume of the different sound
             GuiVolumeControl(&guiState);
+            
+            //Make sure the audio has enough buffer
+            pof.Update();
+            crowd.Update();
 
+            //Plays the music 
+            pof.Play();
+            crowd.Play();
+
+            // Set volume after updating sounds
+            ping.SetVolume(guiState.SFXSliderValue / 100);
+            crowd.SetVolume(guiState.DialogueSliderValue / 100);
+            pof.SetVolume(guiState.MusicSliderValue / 100);
         }
         window.EndDrawing();
     }
+
+    CloseAudioDevice();
     return 0;
 }
 
