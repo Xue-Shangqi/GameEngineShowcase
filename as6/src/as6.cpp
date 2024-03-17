@@ -1,34 +1,34 @@
 #include <raylib-cpp.hpp>
+#include <BufferedInput.hpp>
 #include <cassert>
-#include "counter.cpp"
+#include <iostream>
 #include "skybox.hpp"
 
-bool ProcessInput(raylib::Degree& planeTargetHeading, float& planeTargetSpeed, size_t& selectedPlane);
-raylib::Vector3 CaclulateVelocity(const CalculateVelocityParams& data);
-void DrawBoundedModel(raylib::Model& model, Transformer auto transformer);
-void DrawModel(raylib::Model& model, Transformer auto transformer);
 
-template<typename T>
-concept Transformer = requires(T t, raylib::Transform m) {
-	{ t.operator()(m) } -> std::convertible_to<raylib::Transform>;
-};
 
 raylib::Transform transformer(const raylib::Transform& inputTransform) {
     return inputTransform;
 }
 
-struct CalculateVelocityParams {
-	static constexpr float acceleration = 5;
-	static constexpr float angularAcceleration = 60;
+static constexpr auto AngleClamp = [](raylib::Degree angle) -> raylib::Degree {
+    int intPart = angle;
+    float floatPart = float(angle) - intPart;
+    intPart %= 360;
+    intPart += (intPart < 0) * 360;
+    return intPart + floatPart;
+};
 
-	float targetSpeed;
-	raylib::Degree targetHeading;
-	float& speed;
-	raylib::Degree& heading;
-	float dt;
-
-	float maxSpeed = 50;
-	float minSpeed = 0;
+struct CalculateData {
+    //Variables for position and speed 
+    float speed = 0;
+    float speedTarget = 0;
+    float acceleration = 100;
+    raylib::Degree heading = 10;
+    raylib::Degree headingTarget = 10;
+    raylib::Degree elevation = 0;
+    raylib::Degree elevationTarget = 0;
+    raylib::Vector3 velocity = {speed * cos(heading.RadianValue()), 0, -speed * sin(heading.RadianValue())};
+    raylib::Vector3 pos = {0, 0, 0};
 };
 
 using Entity = uint8_t;
@@ -37,7 +37,7 @@ struct ComponentStorage {
 	std::vector<std::byte> data;
 
 	ComponentStorage() : elementSize(-1), data(1, std::byte{0}) {}
-	ComponentStorage(size_t elementSize) : elementSize(elementSize) {data.resize(5 * elementSize);}
+	ComponentStorage(size_t elementSize) : elementSize(elementSize) {data.resize(10 * elementSize);}
 
 	template<typename Tcomponent>
 	ComponentStorage(Tcomponent reference = {}) : ComponentStorage(sizeof(Tcomponent)) {}
@@ -132,26 +132,36 @@ struct Scene {
 struct Rendering {
 	raylib::Model* model;
 	bool drawBoundingBox = false;
-
 };
 
-void Draw(Scene& scene) {
-	for(Entity e = 0; e < scene.entityMasks.size(); e++){
-		if(!scene.HasComponent<Rendering>(e)) continue;
-		
-		auto& rendering = scene.GetComponent<Rendering>(e);
+struct InputComponent {
+	raylib::BufferedInput inputs;
+	CalculateData data;
+	InputComponent() : inputs(raylib::BufferedInput{}), data(CalculateData{}) {
 
-		raylib::Transform backupTransform = rendering.model->transform;
-		rendering.model->transform = transformer(backupTransform);
-		rendering.model->Draw({});
-		rendering.model->transform = backupTransform;
-		}
+		inputs["w"] = raylib::Action::key(KEY_W).SetPressedCallback([&]{
+			data.speedTarget += 20;
+		}).move();
+
+		inputs["s"] = raylib::Action::key(KEY_S).SetPressedCallback([&]{
+			data.speedTarget -= 20;
+		}).move();
+    }
+
+	void PollEvents(){
+		inputs.PollEvents();
+	}
 };
+
+void movementControl(Entity& entity, Scene& scene);
+void movementCalc(Entity& entity, Scene& scene);
+void Draw(Scene& scene);
+void createModel(Entity& entity, raylib::Model& model, Scene& scene, raylib::Vector3 pos);
 
 int main() {
 	// Create window
-	const int screenWidth = 800 * 2;
-	const int screenHeight = 450 * 2;
+	const int screenWidth = 800 * 1.5;
+	const int screenHeight = 450 * 1.5;
 	raylib::Window window(screenWidth, screenHeight, "CS381 - Assignment 6");
 
 	// Create camera
@@ -179,16 +189,55 @@ int main() {
 
 	// Create Ships
 	raylib::Model cargo("customModel/CargoG_HOSBrigadoon.glb");
+	cargo.transform = raylib::Transform(cargo.transform).Scale(0.025, 0.025, 0.025).RotateXYZ(raylib::Degree(90), raylib::Degree(0), raylib::Degree(90));
 	raylib::Model ship("customModel/ddg51.glb");
-	raylib::Model oilTanker("customModel/OilTanker.glb");
+	ship.transform = raylib::Transform(ship.transform).RotateXYZ(raylib::Degree(90), raylib::Degree(0), raylib::Degree(-90));
+	raylib::Model oilTanker ("customModel/OilTanker.glb");
+	oilTanker.transform = raylib::Transform(oilTanker.transform).Scale(0.006, 0.006, 0.006).RotateXYZ(raylib::Degree(90), raylib::Degree(0), raylib::Degree(90));
 	raylib::Model explorer("customModel/OrientExplorer.glb");
+	explorer.transform = raylib::Transform(explorer.transform).Scale(0.015, 0.015, 0.015).RotateXYZ(raylib::Degree(90), raylib::Degree(0), raylib::Degree(90));
 	raylib::Model smit("customModel/SmitHouston_Tug.glb");
+	smit.transform = raylib::Transform(smit.transform).Scale(1.5, 1.5, 1.5).RotateXYZ(raylib::Degree(0), raylib::Degree(90), raylib::Degree(0));
+
+	// Create the scene
+	Scene scene;
+	raylib::BufferedInput inputs;
+	
+	// Entity for planes
+	Entity pEntityOne = scene.CreateEntity();
+	Entity pEntityTwo = scene.CreateEntity();
+	Entity pEntityThree = scene.CreateEntity();
+	Entity pEntityFour = scene.CreateEntity();
+	Entity pEntityFive = scene.CreateEntity();
+
+	// Entity for ships
+	Entity sEntityOne = scene.CreateEntity();
+	Entity sEntityTwo = scene.CreateEntity();
+	Entity sEntityThree = scene.CreateEntity();
+	Entity sEntityFour = scene.CreateEntity();
+	Entity sEntityFive = scene.CreateEntity();
+
+	// Creates the five planes
+	createModel(pEntityOne, plane, scene, {0, 80, 0});
+	createModel(pEntityTwo, plane, scene, {150, 80, 0});
+	createModel(pEntityThree, plane, scene, {300, 80, 0});
+	createModel(pEntityFour, plane, scene, {-150, 80, 0});
+	createModel(pEntityFive, plane, scene, {-300, 80, 0});
+
+	// Creates the five ship
+	createModel(sEntityOne, cargo, scene, {-300, 0, 0});
+	createModel(sEntityTwo, ship, scene, {-150, 0, 0});
+	createModel(sEntityThree, smit, scene, {0, 0, 0});
+	createModel(sEntityFour, explorer, scene, {150, 0, 0});
+	createModel(sEntityFive, oilTanker, scene, {300, 0, 0});
 
 	// Main loop
 	bool keepRunning = true;
 	while(!window.ShouldClose() && keepRunning) {
 		// Updates
-
+		if(IsKeyPressed(KEY_ESCAPE)){
+			keepRunning = false;
+		}
 		// Rendering
 		window.BeginDrawing();
 		{
@@ -201,7 +250,12 @@ int main() {
 				skybox.Draw();
 				ground.Draw({});
 
-
+				movementCalc(pEntityOne, scene);
+				InputComponent& inputComponent = scene.GetComponent<InputComponent>(pEntityOne);
+				inputComponent.PollEvents();
+				raylib::Transform& planeOne = scene.GetComponent<raylib::Transform>(pEntityOne);
+				planeOne = planeOne.Translate(inputComponent.data.pos).RotateY(raylib::Degree(inputComponent.data.heading));
+				Draw(scene);
 			}
 			camera.EndMode();
 
@@ -214,53 +268,58 @@ int main() {
 	return 0;
 }
 
-// Input handling
-bool ProcessInput(raylib::Degree& planeTargetHeading, float& planeTargetSpeed, size_t& selectedPlane) {
+void movementCalc(Entity& entity, Scene& scene) {
+	InputComponent& inputComponent = scene.GetComponent<InputComponent>(entity);
+    //Speed calculation
+    if(inputComponent.data.speedTarget > inputComponent.data.speed){
+        inputComponent.data.speed += inputComponent.data.acceleration * GetFrameTime();
+    }else if(inputComponent.data.speedTarget < inputComponent.data.speed){
+        inputComponent.data.speed -= inputComponent.data.acceleration * GetFrameTime();
+    }
+    inputComponent.data.velocity = raylib::Vector3{-inputComponent.data.speed * cos(inputComponent.data.heading.RadianValue()), inputComponent.data.speed * sin(inputComponent.data.elevation.RadianValue()), inputComponent.data.speed * sin(inputComponent.data.heading.RadianValue())};
+    inputComponent.data.pos += inputComponent.data.velocity * GetFrameTime();
+    
 
+    //Heading calculation
+    inputComponent.data.headingTarget = AngleClamp(inputComponent.data.headingTarget);
+    inputComponent.data.heading = AngleClamp(inputComponent.data.heading);
+    float difference = abs(inputComponent.data.headingTarget - inputComponent.data.heading);
+    if(inputComponent.data.headingTarget > inputComponent.data.heading){
+        if(difference < 180) inputComponent.data.heading += inputComponent.data.acceleration * GetFrameTime();
+        else if(difference > 180) inputComponent.data.heading -= inputComponent.data.acceleration * GetFrameTime();
+    }else if(inputComponent.data.headingTarget < inputComponent.data.heading){
+        if(difference < 180) inputComponent.data.heading -= inputComponent.data.acceleration * GetFrameTime();
+        else if(difference > 180) inputComponent.data.heading += inputComponent.data.acceleration * GetFrameTime();
+    }
 
-	return true;
+    //Elevation calculation
+    if(inputComponent.data.elevationTarget > inputComponent.data.elevation){
+        inputComponent.data.elevation += inputComponent.data.acceleration * GetFrameTime();
+    }else if(inputComponent.data.elevationTarget < inputComponent.data.elevation){
+        inputComponent.data.elevation -= inputComponent.data.acceleration * GetFrameTime();
+    }
 }
 
-raylib::Vector3 CaclulateVelocity(const CalculateVelocityParams& data) {
-	static constexpr auto AngleClamp = [](raylib::Degree angle) -> raylib::Degree {
-		float decimal = float(angle) - int(angle);
-		int whole = int(angle) % 360;
-		whole += (whole < 0) * 360;
-		return decimal + whole;
-	};
+void Draw(Scene& scene) {
+	for(Entity e = 0; e < scene.entityMasks.size(); e++){
+		if(!scene.HasComponent<Rendering>(e)) continue;
+		
+		auto& rendering = scene.GetComponent<Rendering>(e);
 
-	float target = Clamp(data.targetSpeed, data.minSpeed, data.maxSpeed);
-	if(data.speed < target) data.speed += data.acceleration * data.dt;
-	else if(data.speed > target) data.speed -= data.acceleration * data.dt;
-	data.speed = Clamp(data.speed, data.minSpeed, data.maxSpeed);
-
-	target = AngleClamp(data.targetHeading);
-	float difference = abs(target - data.heading);
-	if(target > data.heading) {
-		if(difference < 180) data.heading += data.angularAcceleration * data.dt;
-		else if(difference > 180) data.heading -= data.angularAcceleration * data.dt;
-	} else if(target < data.heading) {
-		if(difference < 180) data.heading -= data.angularAcceleration * data.dt;
-		else if(difference > 180) data.heading += data.angularAcceleration * data.dt;
-	} 
-	if(difference < .5) data.heading = target; // If the heading is really close to correct 
-	data.heading = AngleClamp(data.heading);
-	raylib::Radian angle = raylib::Degree(data.heading);
-
-	return {cos(angle) * data.speed, 0, -sin(angle) * data.speed};
+		raylib::Transform backupTransform = rendering.model->transform;
+		rendering.model->transform = scene.GetComponent<raylib::Transform>(e);
+		rendering.model->Draw({});
+		rendering.model->transform = backupTransform;
+		}
 }
 
-void DrawBoundedModel(raylib::Model& model, Transformer auto transformer) {
-	raylib::Transform backupTransform = model.transform;
-	model.transform = transformer(backupTransform);
-	model.Draw({});
-	model.GetTransformedBoundingBox().Draw();
-	model.transform = backupTransform;
-}
+void createModel(Entity& entity, raylib::Model& model, Scene& scene, raylib::Vector3 pos){
+	Rendering& renderingComponent = scene.AddComponent<Rendering>(entity);
+	renderingComponent.model = &model;
+	raylib::Transform& transform = scene.AddComponent<raylib::Transform>(entity);
+	transform = renderingComponent.model->transform;
+	transform = transform.Translate(pos);
 
-void DrawModel(raylib::Model& model, Transformer auto transformer) {
-	raylib::Transform backupTransform = model.transform;
-	model.transform = transformer(backupTransform);
-	model.Draw({});
-	model.transform = backupTransform;
+
+	InputComponent& inputComponent  = scene.AddComponent<InputComponent>(entity);
 }
