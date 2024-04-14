@@ -35,6 +35,7 @@ struct CalculateData {
         -speed * sin(heading.RadianValue())
     };
     raylib::Vector3 pos {0, 0, 0};
+	bool moving = false;
 };
 
 using Entity = uint8_t;
@@ -159,12 +160,14 @@ struct InputComponent {
 		inputs["w"] = raylib::Action::key(KEY_W).SetPressedCallback([&]{
 			if(IsKeyPressed(KEY_W)){
 				data.speedTarget += 20;
+				data.moving = true;
 			}
 		}).move();
 
 		inputs["s"] = raylib::Action::key(KEY_S).SetPressedCallback([&]{
 			if(IsKeyPressed(KEY_S)){
 				data.speedTarget -= 20;
+				data.moving = true;
 			}
 		}).move();
 
@@ -183,6 +186,7 @@ struct InputComponent {
 		inputs["space"] = raylib::Action::key(KEY_SPACE).SetPressedCallback([&]{
 			if(IsKeyPressed(KEY_SPACE)){
 				data.speedTarget = 0;
+				data.moving = false;
 			}
 		}).move();
 	}
@@ -361,7 +365,7 @@ int main() {
 		CalculateData& dataFour = scene.GetComponent<CalculateData>(pEntityFour);
 		CalculateData& dataFive = scene.GetComponent<CalculateData>(pEntityFive);
 		
-		if(dataOne.speed != 0 || dataTwo.speed != 0 || dataThree.speed != 0 || dataFour.speed != 0 || dataFive.speed != 0){
+		if(dataOne.moving || dataTwo.moving || dataThree.moving || dataFour.moving || dataFive.moving){
 			if (!IsSoundPlaying(wind)) {
                 PlaySound(wind);
             }
