@@ -1,12 +1,14 @@
 /*
 Author: Shangqi Xue 
-Date: March 2rd, 2024
+Date: April 14th, 2024
 */ 
 
 #include <BufferedInput.hpp>
 #include "raylib-cpp.hpp"
 #include "rlgl.h"
 #include "EC.hpp"
+#include <chrono>
+#include <time.h>
 
 struct Bowl{
     //Variables for position and speed 
@@ -120,12 +122,15 @@ struct CollisionComponent : public Component {
     Rectangle selfBox;
     CollisionComponent(Entity& e) : Component(e) { }
 
-    void checkCollision(raylib::Camera& camera, Rectangle box, int& score){
+    void checkCollision(raylib::Camera& camera, Rectangle box, int& score, raylib::Sound& collect, bool mute){
         selfBox = {GetWorldToScreen(Transform().position, camera).x - 60,  GetWorldToScreen(Transform().position, camera).y - 365, 120.0f, 60.0f};
         Rectangle bowlBox = box;
 
         if(CheckCollisionRecs(selfBox, bowlBox)) {
             score += 10;
+            if(!mute){
+                collect.Play();
+            }
             BananaController& controller = Object().GetComponent<BananaController>().value();
             controller.exist = false;
         }
@@ -162,7 +167,7 @@ int main(){
     std::string title = "Very Scuffed Fruit Collecting Game";
     std::string startText = "Start";
     std::string winText = "You Win!!!";
-    std::string winTextTwo = "why did you even spend time beating it lol";
+    std::string winTextTwo = "you've officially wasted: ";
     std::string loseText = "WOMP WOMP, L + Ratio";
     std::string restartText = "Restart?";
     Vector2 titlePos = calcTextMid(title, 30);
@@ -216,16 +221,30 @@ int main(){
         bananaList.push_back(std::move(banana));
     }
 
-    // Storage for all collision box
+    // Time tracker
+    // std::chrono::_V2::steady_clock::time_point start, end;
+    // std::chrono::duration<double> elapsed_seconds;
+    time_t start, end;
+    double elapsed_seconds;
+    bool startTimeCaptured, timeCaptured = false;
 
 
     //Set up sound
     InitAudioDevice();
+    raylib::Sound collect ("sound/collected_item.mp3");
+    // Credit to @pear8737 and Nj0820 for background music
+    raylib::Music backgroundMusic ("sound/music_background.mp3");
     SetMasterVolume(0.3f);
+    bool mute = false;
     
     
 
     while (!WindowShouldClose()) {
+        if(!mute){
+            backgroundMusic.Play();
+            backgroundMusic.Update();            
+        }
+
         switch(curScreen){
             case START:
                     //Checks if the mouse clicks the start button
@@ -282,6 +301,7 @@ int main(){
                         controller.exist = false;
                         controller.alive = true;
                     }
+                    startTimeCaptured, timeCaptured = false;
 
                     //Camera starts
                     camera.BeginMode();
@@ -295,6 +315,12 @@ int main(){
 
                     break;
                 case PLAY:
+                    if(!startTimeCaptured){
+                        // start = std::chrono::steady_clock::now();
+                        time(&start);
+                        startTimeCaptured = true;
+                    }
+
                     //Camera starts
                     camera.BeginMode();
                     {
@@ -305,7 +331,7 @@ int main(){
                             bananaList[i].Tick(GetFrameTime());
                             CollisionComponent& col = bananaList[i].GetComponent<CollisionComponent>().value();
                             BananaController& controller = bananaList[i].GetComponent<BananaController>().value();
-                            col.checkCollision(camera, bowlBox, score);
+                            col.checkCollision(camera, bowlBox, score, collect, mute);
                             if(!controller.alive){
                                 alive = false;
                             }
@@ -317,9 +343,16 @@ int main(){
                     text.Draw("Score: " + std::to_string(score), 10, 10, 20, raylib::Color::RayWhite());
                     break;
                 case WIN:
+                    if(!timeCaptured){
+                        // end = std::chrono::steady_clock::now();
+                        time(&end);
+                        // elapsed_seconds =  {end - start};  
+                        elapsed_seconds = difftime(end, start);
+                        timeCaptured = true;                    
+                    }
                     //Draws win screen
                     text.Draw(winText, winOnePos.x, winOnePos.y - 50, 40, YELLOW);
-                    text.Draw(winTextTwo, winTwoPos.x, winTwoPos.y + 45, 15, RAYWHITE);
+                    text.Draw(winTextTwo + std::to_string((int)elapsed_seconds) + "s", winTwoPos.x, winTwoPos.y + 45, 15, RAYWHITE);
                     break;
                 case LOSE:
                     //Draws lose screen
@@ -335,6 +368,5 @@ int main(){
     }
 
     //Unload and closes program
-    UnloadSound(laserSound);
     CloseAudioDevice();
 }
