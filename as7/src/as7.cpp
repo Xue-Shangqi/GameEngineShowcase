@@ -233,7 +233,7 @@ int main(){
     InitAudioDevice();
     raylib::Sound collect ("sound/collected_item.mp3");
     // Credit to @pear8737 and Nj0820 for background music
-    raylib::Music backgroundMusic ("sound/music_background.mp3");
+    raylib::Music backgroundMusic ("sound/music-background.mp3");
     SetMasterVolume(0.3f);
     bool mute = false;
     
