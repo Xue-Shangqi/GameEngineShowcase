@@ -148,7 +148,7 @@ Vector2 calcTextMid(std::string content, int font){
 }
 
 //Enum for different screens
-enum CurScreen {START = 0, PLAY, WIN, LOSE};
+enum CurScreen {START = 0, PLAY, WIN, LOSE, STORM};
 
 
 int main(){
@@ -170,16 +170,19 @@ int main(){
     std::string winTextTwo = "you've officially wasted: ";
     std::string loseText = "WOMP WOMP, L + Ratio";
     std::string restartText = "Restart?";
+    std::string funnyMode = "Funny Challenge Mode?";
     Vector2 titlePos = calcTextMid(title, 30);
     Vector2 startPos = calcTextMid(startText, 20);
     Vector2 winOnePos = calcTextMid(winText, 40);
     Vector2 winTwoPos = calcTextMid(winTextTwo, 15);
     Vector2 losePos = calcTextMid(loseText, 30);
     Vector2 restartPos = calcTextMid(restartText, 20);
+    Vector2 funnyModePos = calcTextMid(funnyMode, 20);
 
     //Init start button and mouse
     Vector2 mousePosition = GetMousePosition();
     Rectangle startButton = {(float)(screenWidth / 2 - 50), (float)(screenHeight / 2 + 20), 100, 50};
+    Rectangle funnyButton = {(float)(screenWidth / 2 - 130), (float)(screenHeight / 2 + 80), 260, 50};
 
     //Load background
     Texture2D background = LoadTexture("textures/background.png");
@@ -234,15 +237,23 @@ int main(){
     raylib::Sound collect ("sound/collected_item.mp3");
     // Credit to @pear8737 and Nj0820 for background music
     raylib::Music backgroundMusic ("sound/music-background.mp3");
+    raylib::Music stormMusic ("sound/storm.mp3");
     SetMasterVolume(0.3f);
     bool mute = false;
     
     
 
     while (!WindowShouldClose()) {
-        if(!mute){
+        if(!mute && curScreen != STORM){
             backgroundMusic.Play();
             backgroundMusic.Update();            
+        }else{
+            if(backgroundMusic.IsPlaying()){
+                backgroundMusic.Stop();
+            }
+            // SetMasterVolume(1.0f);
+            stormMusic.Play();
+            backgroundMusic.Update();  
         }
 
         switch(curScreen){
@@ -254,8 +265,22 @@ int main(){
                             curScreen = PLAY;
                         }
                     }
+                    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                        if (CheckCollisionPointRec(mousePosition, funnyButton) && curScreen == START) {
+                            curScreen = STORM;
+                        }
+                    }
                 break;
             case PLAY:
+                if(score >= 100){
+                    curScreen = WIN;
+                }
+
+                if(!alive){
+                    curScreen = LOSE;
+                }
+                break;
+            case STORM:
                 if(score >= 100){
                     curScreen = WIN;
                 }
@@ -288,8 +313,10 @@ int main(){
                 case START:
                     //Draws the title of game
                     DrawRectangle(screenWidth/2 - 50, screenHeight/2 + 20, 100, 50, GetColor(0x052c46ff));
+                    DrawRectangleRec(funnyButton, GetColor(0x7DF9FF));
                     text.Draw(title, titlePos.x, titlePos.y - 50, 30, BLACK);
                     text.Draw(startText, startPos.x, startPos.y + 45, 20, RAYWHITE);
+                    text.Draw(funnyMode, funnyModePos.x, funnyModePos.y + 100, 20, RAYWHITE);
 
                     //Reset stage
                     score = 0;
@@ -341,6 +368,15 @@ int main(){
                     camera.EndMode(); 
 
                     text.Draw("Score: " + std::to_string(score), 10, 10, 20, raylib::Color::RayWhite());
+                    break;
+                case STORM:
+                    if(!startTimeCaptured){
+                        // start = std::chrono::steady_clock::now();
+                        time(&start);
+                        startTimeCaptured = true;
+                    }
+
+
                     break;
                 case WIN:
                     if(!timeCaptured){
