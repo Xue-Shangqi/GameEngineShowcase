@@ -17,7 +17,7 @@ git submodule update --init --recursive
 ```
 
 # Build
-After the submodules are updated, go into the CS-381 (if you are not already in it) and as1 folder and make a build folder:
+After the submodules are updated, go into the CS-381 (if you are not already in it) and as7 folder and make a build folder:
 ```bash
 cd CS-381
 cd as7
