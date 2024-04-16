@@ -309,6 +309,9 @@ int main(){
         }
 
         if(!mute && curScreen != STORM){
+            if(stormMusic.IsPlaying()){
+                stormMusic.Stop();
+            }
             backgroundMusic.Play();
             backgroundMusic.Update();            
         }else if(!mute){
