@@ -400,6 +400,7 @@ int main(){
                     trans.heading = raylib::Degree(0);
                     buffer.maxSpeed = 2.5f;
                     buffer.data.acceleration = 10.0f;
+                    buffer.data.velocity = raylib::Vector3{0, 0, 0};
                     tracker_seconds = 0;
                     for(int i = 0; i < 5; ++i){
                         BananaController& controller = bananaList[i].GetComponent<BananaController>().value();
