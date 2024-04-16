@@ -408,6 +408,8 @@ int main(){
                         controller.exist = false;
                         controller.alive = true;
                         controller.speed = GetRandomValue(20,40);
+                        TransformComponent& swordTrans = swordList[i].GetComponent<TransformComponent>().value();
+                        swordTrans.position = raylib::Vector3(GetRandomValue(-70, 70), GetRandomValue(0, 200), 0);
                     }
                     startTimeCaptured, timeCaptured = false;
 
