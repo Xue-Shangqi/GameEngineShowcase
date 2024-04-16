@@ -392,10 +392,12 @@ int main(){
                     alive = true;
                     timeCaptured = false;
                     startTimeCaptured = false;
+                    rightTime = false;
                     trans.position = raylib::Vector3{0, 0, 0};
                     trans.heading = raylib::Degree(0);
                     buffer.maxSpeed = 2.5f;
                     buffer.data.acceleration = 10.0f;
+                    tracker_seconds = 0;
                     for(int i = 0; i < 5; ++i){
                         BananaController& controller = bananaList[i].GetComponent<BananaController>().value();
                         controller.exist = false;
@@ -405,6 +407,7 @@ int main(){
                         SwordController& controller = swordList[i].GetComponent<SwordController>().value();
                         controller.exist = false;
                         controller.alive = true;
+                        controller.speed = GetRandomValue(20,40);
                     }
                     startTimeCaptured, timeCaptured = false;
 
