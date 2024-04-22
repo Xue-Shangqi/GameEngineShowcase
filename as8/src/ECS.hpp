@@ -34,7 +34,7 @@ struct ComponentStorage {
 	template<typename Tcomponent>
 	Tcomponent& Get(Entity e) {
 		assert(sizeof(Tcomponent) == elementSize);
-		assert(e <= (data.size() / elementSize));
+		assert(e < (data.size() / elementSize));
 		return *(Tcomponent*)(data.data() + e * elementSize);
 	}
 
@@ -57,7 +57,7 @@ struct ComponentStorage {
 		assert(sizeof(Tcomponent) == elementSize);
 		size_t size = data.size() / elementSize;
 		if (size <= e)
-			Allocate<Tcomponent>(std::max<int64_t>(int64_t(e) - size, 1));
+			Allocate<Tcomponent>(std::max<int64_t>(int64_t(e) - size + 1, 1));
 		return Get<Tcomponent>(e);
 	}
 };

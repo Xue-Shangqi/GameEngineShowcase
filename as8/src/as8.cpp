@@ -2,7 +2,6 @@
 #include <BufferedInput.hpp>
 #include "skybox.hpp"
 #include "ECS.hpp"
-#include <iostream>
 
 static constexpr auto AngleClamp = [](raylib::Degree angle) -> raylib::Degree {
 		float decimal = float(angle) - int(angle);
@@ -23,9 +22,12 @@ struct TransformComp {
 };
 
 struct Velocity {
-	float velocity = 0;
 	float speed = 0;
+	float acceleration = GetRandomValue(50, 80);
+	float maxSpeed = GetRandomValue(80, 120);
 	raylib::Degree target = 0;
+	raylib::Vector3 velocity {0, 0, 0};
+	raylib::Vector3 pos {0, 0, 0};
 };
 
 struct TwoD {
@@ -35,18 +37,20 @@ struct TwoD {
 };
 
 struct ThreeD {
-	raylib::Quaternion rotation = 0;
+	float angularAcc = 1;
+	raylib::Quaternion rotation = raylib::Quaternion({});
+	raylib::Quaternion targetRotation = raylib::Vector4{.1, 0, 0, 0};
 };
 
 void InputManager(raylib::BufferedInput&, Scene<ComponentStorage>&, Entity&);
-void ProcessData(Scene<ComponentStorage>*, Entity, char);
 void DrawBoundedModel(raylib::Model&, TransformComp&);
 void DrawModel(raylib::Model&, TransformComp&);
 void SetupModel(Scene<ComponentStorage>&, raylib::Model&, raylib::Vector3);
 void calcHeading2D(TwoD&);
+void Update(Scene<ComponentStorage>&);
 
 void DrawSystem(Scene<ComponentStorage>& scene){
-    for(Entity e = 0; e < scene.entityMasks.size() - 1; e++) {
+    for(Entity e = 0; e < scene.entityMasks.size(); e++) {
         if(!scene.HasComponent<Rendering>(e)) continue;
 		if(!scene.HasComponent<TransformComp>(e)) continue;
         auto& rendering = scene.GetComponent<Rendering>(e);
@@ -59,14 +63,54 @@ void DrawSystem(Scene<ComponentStorage>& scene){
     }
 }
 
-void ProcessData(Scene<ComponentStorage>& scene, Entity selected, char action){
+void Update(Scene<ComponentStorage>& scene){
+	// Does calculation on entity if there is a change in their 2D/3D component and velocity
+    for(Entity e = 0; e < scene.entityMasks.size(); e++) {
+		auto& velData = scene.GetComponent<Velocity>(e);
+		if(velData.target > velData.speed){
+			velData.speed += velData.acceleration * GetFrameTime();
+		}else if(velData.target < velData.speed || velData.maxSpeed < velData.speed){
+			velData.speed -= velData.acceleration * GetFrameTime();
+		}
 
+		// 2D math
+        if(scene.HasComponent<TwoD>(e) && scene.HasComponent<TransformComp>(e)){
+			auto& data = scene.GetComponent<TwoD>(e);
+			auto& transform = scene.GetComponent<TransformComp>(e);
+			calcHeading2D(data);			
+			velData.velocity = raylib::Vector3{velData.speed * cos(data.heading.RadianValue()), 0, -velData.speed * sin(data.heading.RadianValue())};
+			velData.pos += velData.velocity * GetFrameTime();			
+			transform.newTransform = transform.ogTransform.RotateY(data.heading).Translate(velData.pos);
+		}else{
+			// 3D math
+			auto& data = scene.GetComponent<ThreeD>(e);
+			auto& transform = scene.GetComponent<TransformComp>(e);
+
+			data.rotation = data.rotation.Slerp(data.targetRotation, data.angularAcc);
+			raylib::Quaternion buffer = 10;
+			velData.velocity = raylib::Vector3::Left().RotateByQuaternion(data.rotation * buffer) * velData.speed;
+			velData.pos += velData.velocity * GetFrameTime();
+			std::pair<Vector3, raylib::Radian> pair = data.rotation.ToAxisAngle();
+			transform.newTransform = raylib::Transform(transform.ogTransform).Rotate(pair.first, pair.second).Translate(velData.pos);
+		}
+    }
 }
 
 void InputManager(raylib::BufferedInput& inputs, Scene<ComponentStorage>& scene, Entity& selected){
+	inputs["w"] = raylib::Action::key(KEY_W).SetPressedCallback([&]{
+		auto& velData = scene.GetComponent<Velocity>(selected);
+		velData.target += 20;
+	}).move();
+
+	inputs["s"] = raylib::Action::key(KEY_S).SetPressedCallback([&]{
+		auto& velData = scene.GetComponent<Velocity>(selected);
+		velData.target -= 20;
+	}).move();
+
 	inputs["a"] = raylib::Action::key(KEY_A).SetPressedCallback([&]{
 		if(selected < 5){
-
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Up(), raylib::Degree(15));
 		}else{
 			auto& data = scene.GetComponent<TwoD>(selected);
 			data.targetHeading += 30;
@@ -75,13 +119,45 @@ void InputManager(raylib::BufferedInput& inputs, Scene<ComponentStorage>& scene,
 
 	inputs["d"] = raylib::Action::key(KEY_D).SetPressedCallback([&]{
 		if(selected < 5){
-
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Up(), raylib::Degree(-15));
 		}else{
 			auto& data = scene.GetComponent<TwoD>(selected);
 			data.targetHeading -= 30;
 		}
 	}).move();
 
+	inputs["q"] = raylib::Action::key(KEY_Q).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Left().RotateByQuaternion(data.rotation), raylib::Degree(15));
+		}
+	}).move();
+
+	inputs["e"] = raylib::Action::key(KEY_E).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Left().RotateByQuaternion(data.rotation), raylib::Degree(-15));
+		}
+	}).move();
+	inputs["R"] = raylib::Action::key(KEY_R).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Forward().RotateByQuaternion(data.rotation), raylib::Degree(15));
+		}
+	}).move();
+
+	inputs["F"] = raylib::Action::key(KEY_F).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Forward().RotateByQuaternion(data.rotation), raylib::Degree(-15));
+		}
+	}).move();
+
+	inputs["space"] = raylib::Action::key(KEY_SPACE).SetPressedCallback([&]{
+		auto& velData = scene.GetComponent<Velocity>(selected);
+		velData.target = 0;
+	}).move();
 }
 
 
@@ -163,6 +239,7 @@ int main(){
 
 	// Import models
 	raylib::Model plane("customModel/PolyPlane.glb");
+	plane.transform = raylib::Transform(plane.transform).RotateXYZ(raylib::Degree(180), 0, 0);
 	raylib::Model cargo("customModel/CargoG_HOSBrigadoon.glb");
 	cargo.transform = raylib::Transform(cargo.transform).Scale(0.025, 0.025, 0.025).RotateXYZ(raylib::Degree(90), raylib::Degree(0), raylib::Degree(90));
 	raylib::Model ship("customModel/ddg51.glb");
@@ -186,10 +263,10 @@ int main(){
 	SetupModel(scene, smit, {0, 0, 0});
 	SetupModel(scene, explorer, {150, 0, 0});
 	SetupModel(scene, oilTanker, {300, 0, 0});
-	SetupModel(scene, oilTanker, {300, 0, 0});
+	// SetupModel(scene, oilTanker, {300, 0, 0});
 
 	// Creates tracker for which plane is selected
-	Entity selected = 5;
+	Entity selected = 0;
 	auto& renderingStart = scene.GetComponent<Rendering>(selected);
 	renderingStart.drawBoundingBox = true;
 
@@ -217,7 +294,7 @@ int main(){
 			}
 			InputManager(inputs, scene, selected);
 
-			for(Entity e = 0; e < scene.entityMasks.size() - 1; e++) {
+			for(Entity e = 0; e < scene.entityMasks.size(); e++) {
 				if(!scene.HasComponent<Rendering>(e)) continue;
 				auto& rendering = scene.GetComponent<Rendering>(e);
 
@@ -230,13 +307,7 @@ int main(){
 		// Stuff
 		inputs.PollEvents();
 		auto& transform = scene.GetComponent<TransformComp>(selected);
-		if(selected < 5){
-
-		}else{
-			auto& data = scene.GetComponent<TwoD>(selected);
-			calcHeading2D(data);			
-			transform.newTransform = transform.ogTransform.RotateY(data.heading);
-		}
+		Update(scene);
 
 		// Rendering
 		window.BeginDrawing();
