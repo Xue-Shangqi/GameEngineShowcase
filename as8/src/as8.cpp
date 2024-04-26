@@ -275,9 +275,70 @@ int main(){
 		if(i < 5) {scene.AddComponent<ThreeD>(i);}
 		else {scene.AddComponent<TwoD>(i);}
 	}
+	
+	inputs["w"] = raylib::Action::key(KEY_W).SetPressedCallback([&]{
+		auto& velData = scene.GetComponent<Velocity>(selected);
+		velData.target += 20;
+	}).move();
 
-	// Load in buffer inputs
-	InputManager(inputs, scene, selected);
+	inputs["s"] = raylib::Action::key(KEY_S).SetPressedCallback([&]{
+		auto& velData = scene.GetComponent<Velocity>(selected);
+		velData.target -= 20;
+	}).move();
+
+	inputs["a"] = raylib::Action::key(KEY_A).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Up(), raylib::Degree(15));
+		}else{
+			auto& data = scene.GetComponent<TwoD>(selected);
+			data.targetHeading += 30;
+		}
+	}).move();
+
+	inputs["d"] = raylib::Action::key(KEY_D).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Up(), raylib::Degree(-15));
+		}else{
+			auto& data = scene.GetComponent<TwoD>(selected);
+			data.targetHeading -= 30;
+		}
+	}).move();
+
+	inputs["q"] = raylib::Action::key(KEY_Q).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Left().RotateByQuaternion(data.rotation), raylib::Degree(15));
+		}
+	}).move();
+
+	inputs["e"] = raylib::Action::key(KEY_E).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Left().RotateByQuaternion(data.rotation), raylib::Degree(-15));
+		}
+	}).move();
+	inputs["R"] = raylib::Action::key(KEY_R).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Forward().RotateByQuaternion(data.rotation), raylib::Degree(15));
+		}
+	}).move();
+
+	inputs["F"] = raylib::Action::key(KEY_F).SetPressedCallback([&]{
+		if(selected < 5){
+			auto& data = scene.GetComponent<ThreeD>(selected);
+			data.targetRotation = data.targetRotation * raylib::Quaternion::FromAxisAngle(raylib::Vector3::Forward().RotateByQuaternion(data.rotation), raylib::Degree(-15));
+		}
+	}).move();
+
+	inputs["space"] = raylib::Action::key(KEY_SPACE).SetPressedCallback([&]{
+		auto& velData = scene.GetComponent<Velocity>(selected);
+		velData.target = 0;
+	}).move();
+
+
 	
 	bool keepRunning = true;
 	while(!window.ShouldClose() && keepRunning) {
