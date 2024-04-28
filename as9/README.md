@@ -1,5 +1,7 @@
 # About
 This custom game is a continuation of my previous fruit collecting game. For this one, the rule is the same as the preivous version where you need to collect the fruits without letting them fall off the map. There are two version of the game, one being the normal difficulty and the other one is the "funny" (hard) difficulty. For the normal difficulty, the win condition is to score 200 points and for the funny difficulty, the win condition is to "survive". The background music for the normal mode is made by [pear8737](https://www.youtube.com/channel/UCuWfAq9BTpHx9Waz3R1RjNw) and [Nj0820](https://www.youtube.com/watch?v=kDZvuxlHFJA). The background music for the hard mode is made by [Casey Edwards](https://www.youtube.com/c/CaseyEdwards) and [Victor Borba](https://www.youtube.com/channel/UCgKUpNOPIIdOA0E_jeQaA-g). The only difference that this version of the game has that is different than the last verion is the addition of new fruits and completely new architecture.
+
+An image of the gameplay.
 ![Gameplay](gameplay.jpg)
 
 ## Description of Criterion
