@@ -237,7 +237,7 @@ void CollisionSystem(Scene<ComponentStorage>& scene, raylib::Camera camera, CurS
             }
         }
     }else if(screen == STORM){
-        for(Entity e = 11; e <= scene.entityMasks.size(); ++e){
+        for(Entity e = 11; e < scene.entityMasks.size(); ++e){
             auto& other = scene.GetComponent<CollisionData>(e);
             auto& otherData = scene.GetComponent<StageData>(e);
             other.selfBox = {GetWorldToScreen(otherData.position, camera).x - 20,  GetWorldToScreen(otherData.position, camera).y - 445, 140.0f, 120.0f};
@@ -327,35 +327,30 @@ int main(){
     Scene scene = Scene();
     SetupPlayer(scene, bowl);
     auto& playerData = scene.GetComponent<BowlData>(0);
-    // SetupSystem(scene, sword, 2);
-    // auto& collisionData = scene.AddComponent<CollisionData>(1);
-    // collisionData.itemType = 10;
     for(Entity e = 1; e <= 10; ++e){
-        int random = GetRandomValue(1, 4);
-        auto& collisionData = scene.GetComponent<CollisionData>(0);  
-        switch(random){
-            case 1: 
-                SetupSystem(scene, banana, 1);
-                collisionData = scene.AddComponent<CollisionData>(e);
-                collisionData.itemType = 1;            
-                break;
-            case 2:
-                SetupSystem(scene, strawberry, 1);
-                collisionData = scene.AddComponent<CollisionData>(e);
-                collisionData.itemType = 2;
-                break;
-            case 3:
-                SetupSystem(scene, apple, 1);
-                collisionData = scene.AddComponent<CollisionData>(e);
-                collisionData.itemType = 3;
-                break;
-            case 4:
-                SetupSystem(scene, pineapple, 1);
-                collisionData = scene.AddComponent<CollisionData>(e);
-                collisionData.itemType = 4;
-                break;
+        int random = GetRandomValue(1, 4); 
+        if(random == 1){
+            SetupSystem(scene, banana, 1);
+            auto& collisionData = scene.AddComponent<CollisionData>(e);
+            collisionData.itemType = 1;              
+        }
+        if(random == 2){
+            SetupSystem(scene, strawberry, 1);
+            auto& collisionData = scene.AddComponent<CollisionData>(e);
+            collisionData.itemType = 2;            
+        }
+        if(random == 3){
+            SetupSystem(scene, apple, 1);
+            auto& collisionData = scene.AddComponent<CollisionData>(e);
+            collisionData.itemType = 3;           
+        }
+        if(random == 4){
+            SetupSystem(scene, pineapple, 1);
+            auto& collisionData = scene.AddComponent<CollisionData>(e);
+            collisionData.itemType = 4;            
         }
     }
+    
     for(Entity e = 11; e <= 30; ++e){
         SetupSystem(scene, sword, 2);
         auto& collisionData = scene.AddComponent<CollisionData>(e);
@@ -430,7 +425,7 @@ int main(){
                 }
                 break;
             case STORM:
-                if(score >= 1000){
+                if(score >= 950){
                     curScreen = WIN;
                 }
 
@@ -487,10 +482,13 @@ int main(){
                     playerData.maxSpeed = 2.5f;
                     playerData.acceleration = 10.0f;
                     playerData.velocity = raylib::Vector3{0, 0, 0};
+                    playerData.maxSpeed = 3.0f;
+                    playerData.acceleration = 10.0f;
                     tracker_seconds = 0;
 
                     for(Entity e = 1; e < scene.entityMasks.size(); ++e){
                         auto& fruitData = scene.GetComponent<StageData>(e);
+                        fruitData.position.y = 200;
                         fruitData.exist = false;
                     }
 
@@ -523,6 +521,8 @@ int main(){
                     tracker_seconds = difftime(tracker, start);
                     if(tracker_seconds >= 13){
                         rightTime = true;
+                        playerData.maxSpeed = 10.0f;
+                        playerData.acceleration = 100.0f;
                     }
 
                     camera.BeginMode();
