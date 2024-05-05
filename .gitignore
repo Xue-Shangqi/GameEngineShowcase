@@ -37,3 +37,4 @@ generated/
 *.vscode
 
 godot
+*.godot

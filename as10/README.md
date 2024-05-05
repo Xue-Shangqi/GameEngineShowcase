@@ -5,7 +5,12 @@ The project is a very simple game that is multiplayer where the value goes up  o
 None
 
 # Set up
-The better and faster way to run the game is to just download and import it straight into godot since it doesn't require you to build and make the game.
+The better and faster way to run the game is to just download and import it straight into godot since it doesn't require you to build and make the game. To import the game, first drag and drop into res:// folder the follow files:
+* Networking.gd
+* RemoteScript.gd
+* World.tscn
+* Player.tscn
+and then go into Godot engine and select Project -> Project Settings... -> Run -> Set the main scene to World.tscn
 
 
 However if you really want to build and make the game, here are the commands:
