@@ -5,6 +5,10 @@ The project is a very simple game that is multiplayer where the value goes up  o
 None
 
 # Set up
+The better and faster way to run the game is to just download and import it straight into godot since it doesn't require you to build and make the game.
+
+
+However if you really want to build and make the game, here are the commands:
 To run the code, first you need to git clone the CS-381 repository and then update submodules. Run the commands:
 ```bash
 git init
@@ -12,12 +16,10 @@ git submodule add https://github.com/Xue-Shangqi/CS-381.git
 git submodule init
 git submodule update --init --recursive
 ```
-
-# Build
 After the submodules are updated, go into the CS-381 (if you are not already in it) and Godot folder and make a build folder:
 ```bash
 cd CS-381
-cd as10/project
+cd as10
 mkdir build
 cd build
 ```
