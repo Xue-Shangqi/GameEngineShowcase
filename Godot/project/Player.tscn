@@ -1,0 +1,79 @@
+[gd_scene load_steps=3 format=3 uid="uid://cn1ttek5mbkiw"]
+
+[ext_resource type="Script" path="res://RemoteScript.gd" id="1_qgh3i"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_88kgq"]
+properties/0/path = NodePath("Game/Label:text")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Game" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qgh3i")
+
+[node name="Label" type="Label" parent="Game"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Value: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Inc" type="Button" parent="Game"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = 250.0
+offset_right = -702.0
+offset_bottom = -296.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Increment"
+
+[node name="Dec" type="Button" parent="Game"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 700.0
+offset_top = 250.0
+offset_right = 950.0
+offset_bottom = 350.0
+text = "Decrement"
+
+[node name="Name" type="Label" parent="Game"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Player 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_88kgq")
+
+[connection signal="pressed" from="Game/Inc" to="Game" method="_on_inc_pressed"]
+[connection signal="pressed" from="Game/Dec" to="Game" method="_on_dec_pressed"]

@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://7fy2oo82j8lp"]
+
+[ext_resource type="Script" path="res://Networking.gd" id="1_y2atw"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HostMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_y2atw")
+
+[node name="PanelContainer" type="PanelContainer" parent="HostMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 28.7
+anchor_bottom = 16.2
+offset_left = 465.0
+offset_top = 150.0
+offset_right = -375.0
+offset_bottom = -110.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostMenu/PanelContainer"]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="HostMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HostButton" type="Button" parent="HostMenu/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(290, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Host"
+
+[node name="IPAddress" type="LineEdit" parent="HostMenu/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(290, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 0.0
+text = "localhost"
+alignment = 1
+
+[node name="JoinButton" type="Button" parent="HostMenu/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(290, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join"
+
+[node name="Spacer" type="Control" parent="HostMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="pressed" from="HostMenu/PanelContainer/VBoxContainer/HostButton" to="HostMenu" method="_on_host_button_pressed"]
+[connection signal="pressed" from="HostMenu/PanelContainer/VBoxContainer/JoinButton" to="HostMenu" method="_on_join_button_pressed"]
