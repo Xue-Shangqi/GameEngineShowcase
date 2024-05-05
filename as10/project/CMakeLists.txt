@@ -27,7 +27,7 @@ if ( APPLE )
 endif()
 
 # Main project information
-project( AS9
+project( AS10
 	LANGUAGES
 		CXX
 	VERSION
