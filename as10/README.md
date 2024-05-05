@@ -10,8 +10,8 @@ The better and faster way to run the game is to just download and import it stra
 * RemoteScript.gd
 * World.tscn
 * Player.tscn
-and then go into Godot engine and select Project -> Project Settings... -> Run -> Set the main scene to World.tscn
 
+and then go into Godot engine and select Project -> Project Settings... -> Run -> Set the main scene to World.tscn
 
 However if you really want to build and make the game, here are the commands:
 To run the code, first you need to git clone the CS-381 repository and then update submodules. Run the commands:
