@@ -1,1 +1,1 @@
-# CS-381
+# Collection of all games made for game engine architecture
